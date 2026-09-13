@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cauchy–Riemann Equations — Guided If and Only If Proof</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)'], ['$', '$']], displayMath: [['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root{
+      --bg:#f5f7fb;--card:#fff;--ink:#17212b;--muted:#667085;--line:#dfe5ec;
+      --accent:#244f7b;--accent-soft:#edf4fb;--hint:#fff9ed;--hint-line:#ecd7a1;
+      --good:#236a48;--shadow:0 8px 28px rgba(22,33,46,.08);--radius:18px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.58}
+    header{background:linear-gradient(135deg,#142b3f,#244f7b);color:#fff;padding:30px 18px 26px}
+    .wrap{max-width:1000px;margin:0 auto}
+    h1{margin:0 0 7px;font-size:clamp(1.9rem,4vw,2.75rem);letter-spacing:-.02em} h2{margin-top:0}
+    .sub{opacity:.88;max-width:840px}
+    .pills{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+    .pill{border:1px solid rgba(255,255,255,.23);background:rgba(255,255,255,.07);border-radius:999px;padding:6px 10px;font-size:.88rem}
+    main{padding:24px 16px 60px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin:18px 0}
+    .theorem{border-left:5px solid var(--accent);background:#fbfdff;padding:15px 17px;border-radius:12px;margin:10px 0 16px}
+    .warning{border-left:5px solid #c48a20;background:#fffaf0;padding:14px 16px;border-radius:12px;margin:12px 0}
+    .roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .roadmap div{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fafcff;font-size:.93rem}
+    .progress{position:sticky;top:10px;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:8px 13px;box-shadow:0 4px 16px rgba(22,33,46,.08);display:inline-block;margin-bottom:6px;color:var(--muted);font-size:.9rem}
+    .stephead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
+    .stepnum{display:inline-block;min-width:34px;height:34px;border-radius:999px;line-height:34px;text-align:center;background:var(--accent);color:#fff;font-weight:800;margin-right:8px}
+    .tag{border:1px solid #d5e1ee;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:5px 10px;font-size:.82rem;white-space:nowrap}
+    .question{background:#f8fafc;border-radius:12px;padding:13px 15px;margin:12px 0;border:1px solid var(--line)}
+    textarea{width:100%;min-height:102px;resize:vertical;border:1px solid #cfd7e2;border-radius:11px;padding:12px;font:inherit;outline:none;margin-top:8px}
+    textarea:focus{border-color:#6f90b0;box-shadow:0 0 0 3px rgba(36,79,123,.08)}
+    .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+    button,.linkbtn{border:1px solid #c8d2de;background:#fff;color:var(--ink);padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;text-decoration:none;font-size:.92rem}
+    button:hover,.linkbtn:hover{background:#f6f9fc}.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.primary:hover{background:#1e4267}
+    .hint,.reveal{display:none;margin-top:11px;border-radius:12px;padding:13px 15px}
+    .hint{background:var(--hint);border:1px solid var(--hint-line)}.reveal{background:#f5fbf8;border:1px solid #cfe7d9}
+    .ai-box{margin-top:14px;padding:14px 15px;border-radius:13px;background:#f5f9ff;border:1px solid #d4e2f0}
+    .ai-box h4{margin:0 0 5px;font-size:1rem}.ai-box p{margin:4px 0;color:var(--muted);font-size:.92rem}
+    .ai-status{min-height:1.25em;margin-top:8px;color:var(--good);font-size:.9rem}
+    .prompt-preview{display:none;white-space:pre-wrap;max-height:240px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-top:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.83rem;line-height:1.45}
+    .bigidea{background:#eef6ff;border:1px solid #cfdfef;border-radius:14px;padding:16px;margin-top:14px}
+    .matrixbox{background:#f8fbff;border:1px solid #d9e4ef;border-radius:14px;padding:16px;margin-top:12px}
+    details{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:14px;background:#fbfcfe} summary{cursor:pointer;font-weight:800}
+    footer{text-align:center;color:var(--muted);padding:24px 16px 50px;font-size:.9rem}
+    @media (max-width:720px){.roadmap{grid-template-columns:1fr}.stephead{flex-direction:column}}
+  </style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Cauchy–Riemann Equations — Guided \( \Longleftrightarrow \) Proof</h1>
+  <div class="sub">Understand both directions: why complex differentiability forces the Cauchy–Riemann equations, and why the Cauchy–Riemann equations, together with real differentiability of \(u\) and \(v\), are sufficient for complex differentiability.</div>
+  <div class="pills"><span class="pill">necessity</span><span class="pill">sufficiency</span><span class="pill">7 guided steps</span><span class="pill">AI diagnosis</span></div>
+</div></header>
+
+<main class="wrap">
+<section class="card">
+  <h2>The theorem</h2>
+  <div class="theorem">
+    Let \(f(z)=u(x,y)+iv(x,y)\), where \(z=x+iy\). Assume \(u\) and \(v\) are differentiable as functions \(\mathbb R^2\to\mathbb R\) at \((x_0,y_0)\). Then \(f\) is complex differentiable at \(z_0=x_0+iy_0\) if and only if
+    \[
+      \boxed{u_x=v_y,\qquad u_y=-v_x}
+    \]
+    at \((x_0,y_0)\).
+  </div>
+  <div class="warning"><strong>Important caveat.</strong> The Cauchy–Riemann equations at a single point, by themselves, do not guarantee complex differentiability. The converse uses real differentiability of \(u\) and \(v\) at the point. A common textbook sufficient condition is continuity of the first partial derivatives near the point.</div>
+  <div class="roadmap">
+    <div><strong>Necessity</strong><br>Approach \(z_0\) horizontally and vertically.</div>
+    <div><strong>Sufficiency</strong><br>Use the real linear approximation of \(u\) and \(v\).</div>
+    <div><strong>Meaning</strong><br>The Jacobian must look like multiplication by one complex number.</div>
+  </div>
+</section>
+
+<div class="progress" id="progress">0 of 7 proof steps revealed</div>
+
+<section class="card" id="step1">
+  <div class="stephead"><div><span class="stepnum">1</span><strong>Start from complex differentiability</strong></div><span class="tag">Necessity</span></div>
+  <p>Suppose \(f\) is complex differentiable at \(z_0=x_0+iy_0\). Then
+  \[
+    f'(z_0)=\lim_{\Delta z\to0}\frac{f(z_0+\Delta z)-f(z_0)}{\Delta z}.
+  \]</p>
+  <div class="question"><strong>Question.</strong> Why may we compute this limit first along the real direction \(\Delta z=\Delta x\)?
+    <textarea id="a1" placeholder="Explain what existence of the full complex limit implies about directional approaches."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your answer</h4><p>AI checks only this proof step and does not reveal the next one.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(1)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(1)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt1"></div><div class="ai-status" id="aistatus1"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(1)">Small hint</button><button class="primary" onclick="reveal(1)">Reveal explanation</button></div>
+  <div class="hint" id="h1">If a two-dimensional limit exists, every restricted path toward the point must give the same limit.</div>
+  <div class="reveal" id="r1">Complex differentiability gives a genuine limit as \(\Delta z\to0\) from arbitrary directions. Therefore we may restrict to \(\Delta z=\Delta x\), and the resulting limit must equal \(f'(z_0)\).</div>
+</section>
+
+<section class="card" id="step2">
+  <div class="stephead"><div><span class="stepnum">2</span><strong>Differentiate along the real direction</strong></div><span class="tag">Horizontal approach</span></div>
+  <div class="question"><strong>Question.</strong> Compute the derivative using \(\Delta z=\Delta x\). What expression do you obtain for \(f'(z_0)\)?
+    <textarea id="a2" placeholder="Expand f = u + iv and identify the relevant partial derivatives."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your computation</h4><p>AI checks the quotient and the partial derivatives you identify.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(2)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(2)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt2"></div><div class="ai-status" id="aistatus2"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(2)">Small hint</button><button class="primary" onclick="reveal(2)">Reveal explanation</button></div>
+  <div class="hint" id="h2">Here \(y\) stays fixed while \(x\) changes.</div>
+  <div class="reveal" id="r2">We obtain
+    \[
+      \boxed{f'(z_0)=u_x(x_0,y_0)+iv_x(x_0,y_0)}.
+    \]
+  </div>
+</section>
+
+<section class="card" id="step3">
+  <div class="stephead"><div><span class="stepnum">3</span><strong>Differentiate along the imaginary direction</strong></div><span class="tag">Vertical approach</span></div>
+  <div class="question"><strong>Question.</strong> Now take \(\Delta z=i\Delta y\). Compute \(f'(z_0)\) again.
+    <textarea id="a3" placeholder="Be careful when dividing by iΔy."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your computation</h4><p>AI checks the factor \(1/i=-i\) and the resulting real/imaginary parts.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(3)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(3)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt3"></div><div class="ai-status" id="aistatus3"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(3)">Small hint</button><button class="primary" onclick="reveal(3)">Reveal explanation</button></div>
+  <div class="hint" id="h3">Use
+    \[
+      \frac{\Delta u+i\Delta v}{i\Delta y}
+      =-i\frac{\Delta u}{\Delta y}+\frac{\Delta v}{\Delta y}.
+    \]
+  </div>
+  <div class="reveal" id="r3">Taking the limit gives
+    \[
+      \boxed{f'(z_0)=v_y(x_0,y_0)-iu_y(x_0,y_0)}.
+    \]
+  </div>
+</section>
+
+<section class="card" id="step4">
+  <div class="stephead"><div><span class="stepnum">4</span><strong>Compare the two formulas</strong></div><span class="tag">CR equations appear</span></div>
+  <div class="question"><strong>Question.</strong> Since both directional computations equal the same \(f'(z_0)\), what equations must hold?
+    <textarea id="a4" placeholder="Compare real parts and imaginary parts."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your answer</h4><p>AI checks whether both CR equations have the correct signs.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(4)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(4)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt4"></div><div class="ai-status" id="aistatus4"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(4)">Small hint</button><button class="primary" onclick="reveal(4)">Reveal explanation</button></div>
+  <div class="hint" id="h4">Compare \(u_x+iv_x=v_y-iu_y\).</div>
+  <div class="reveal" id="r4">Equality of real and imaginary parts gives
+    \[
+      \boxed{u_x=v_y,\qquad u_y=-v_x}.
+    \]
+    This proves necessity.
+  </div>
+</section>
+
+<section class="card" id="step5">
+  <div class="stephead"><div><span class="stepnum">5</span><strong>Start the converse from real differentiability</strong></div><span class="tag">Sufficiency</span></div>
+  <p>Now assume \(u,v\) are differentiable at \((x_0,y_0)\) and satisfy the CR equations there. Set
+    \[
+      \Delta z=\Delta x+i\Delta y,\qquad \rho=\sqrt{(\Delta x)^2+(\Delta y)^2}=|\Delta z|.
+    \]
+  </p>
+  <div class="question"><strong>Question.</strong> What first-order expansions for \(\Delta u\) and \(\Delta v\) are supplied by real differentiability?
+    <textarea id="a5" placeholder="Write each increment as a linear part plus an error o(ρ)."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your expansions</h4><p>AI checks whether you used real differentiability, not merely existence of partial derivatives.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(5)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(5)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt5"></div><div class="ai-status" id="aistatus5"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(5)">Small hint</button><button class="primary" onclick="reveal(5)">Reveal explanation</button></div>
+  <div class="hint" id="h5">Real differentiability means
+    \[
+      \Delta u=u_x\Delta x+u_y\Delta y+o(\rho),
+    \]
+    and similarly for \(v\).
+  </div>
+  <div class="reveal" id="r5">We have
+    \[
+      \Delta u=u_x\Delta x+u_y\Delta y+o(\rho),\qquad
+      \Delta v=v_x\Delta x+v_y\Delta y+o(\rho).
+    \]
+    Therefore
+    \[
+      \Delta f=(u_x+iv_x)\Delta x+(u_y+iv_y)\Delta y+o(\rho).
+    \]
+  </div>
+</section>
+
+<section class="card" id="step6">
+  <div class="stephead"><div><span class="stepnum">6</span><strong>Use the CR equations to factor the linear part</strong></div><span class="tag">Key algebra</span></div>
+  <div class="question"><strong>Question.</strong> Use \(u_y=-v_x\) and \(v_y=u_x\) to show that the linear part of \(\Delta f\) is a single complex number times \(\Delta z\).
+    <textarea id="a6" placeholder="Try to factor Δx+iΔy."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your factorization</h4><p>AI checks only the algebraic factorization in this step.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(6)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(6)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt6"></div><div class="ai-status" id="aistatus6"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(6)">Small hint</button><button class="primary" onclick="reveal(6)">Reveal explanation</button></div>
+  <div class="hint" id="h6">Replace \(u_y\) by \(-v_x\) and \(v_y\) by \(u_x\), then group the \(\Delta y\)-coefficient.</div>
+  <div class="reveal" id="r6">Since
+    \[
+      u_y+iv_y=-v_x+iu_x=i(u_x+iv_x),
+    \]
+    we get
+    \[
+      \Delta f=(u_x+iv_x)(\Delta x+i\Delta y)+o(\rho)
+      =(u_x+iv_x)\Delta z+o(|\Delta z|).
+    \]
+  </div>
+</section>
+
+<section class="card" id="step7">
+  <div class="stephead"><div><span class="stepnum">7</span><strong>Divide by \(\Delta z\) and take the limit</strong></div><span class="tag">Finish sufficiency</span></div>
+  <div class="question"><strong>Question.</strong> Why does
+    \[
+      \Delta f=(u_x+iv_x)\Delta z+o(|\Delta z|)
+    \]
+    imply complex differentiability?
+    <textarea id="a7" placeholder="Divide by Δz and control the error term."></textarea>
+  </div>
+  <div class="ai-box"><h4>Consult AI about your final step</h4><p>AI checks whether you handled the \(o(|\Delta z|)\) term correctly.</p>
+    <div class="btnrow"><button class="primary" onclick="buildAIPrompt(7)">Build AI diagnosis prompt</button><button onclick="copyAIPrompt(7)">Copy prompt</button><a class="linkbtn" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT ↗</a></div>
+    <div class="prompt-preview" id="aiprompt7"></div><div class="ai-status" id="aistatus7"></div>
+  </div>
+  <div class="btnrow"><button onclick="showHint(7)">Small hint</button><button class="primary" onclick="reveal(7)">Reveal explanation</button></div>
+  <div class="hint" id="h7">If \(R(\Delta z)=o(|\Delta z|)\), then \(|R(\Delta z)|/|\Delta z|\to0\).</div>
+  <div class="reveal" id="r7">For \(\Delta z\neq0\),
+    \[
+      \frac{\Delta f}{\Delta z}
+      =u_x+iv_x+\frac{o(|\Delta z|)}{\Delta z}.
+    \]
+    The error term tends to \(0\) in modulus, so
+    \[
+      \boxed{f'(z_0)=u_x+iv_x=v_y-iu_y}.
+    \]
+    This proves sufficiency.
+  </div>
+  <div class="bigidea"><strong>The central idea:</strong> complex differentiability means that the first-order real-linear approximation of \(f\) is actually multiplication by one complex number. The Cauchy–Riemann equations are exactly the algebraic conditions that force the real Jacobian to have that form.</div>
+</section>
+
+<section class="card">
+  <h2>Geometric meaning of the CR equations</h2>
+  <p>The real Jacobian is
+    \[
+      Df=
+      \begin{pmatrix}
+        u_x & u_y\\
+        v_x & v_y
+      \end{pmatrix}.
+    \]
+    Under the CR equations,
+  </p>
+  <div class="matrixbox">
+    \[
+      Df=
+      \begin{pmatrix}
+        u_x & -v_x\\
+        v_x & u_x
+      \end{pmatrix}
+      =
+      \begin{pmatrix}
+        a & -b\\
+        b & a
+      \end{pmatrix},
+    \]
+    exactly the real matrix for multiplication by \(a+ib=f'(z_0)\).
+  </div>
+  <details><summary>Why is this related to conformality?</summary><p>If \(f'(z_0)\neq0\), multiplication by \(f'(z_0)\) is a rotation followed by a dilation. Thus a holomorphic map with nonzero derivative is infinitesimally angle-preserving.</p></details>
+  <details><summary>Why are the CR equations alone at one point not enough?</summary><p>They constrain only the candidate linear part. They do not guarantee that the remaining nonlinear error is \(o(|\Delta z|)\). Real differentiability supplies exactly that control.</p></details>
+  <details><summary>Common textbook sufficient hypothesis</summary><p>If the first partial derivatives exist in a neighborhood, are continuous at the point, and satisfy the CR equations there, then \(u\) and \(v\) are differentiable there, so the sufficiency argument applies.</p></details>
+</section>
+</main>
+
+<footer>Guided proof prototype · Cauchy–Riemann equations and complex differentiability</footer>
+
+<script>
+const total=7;
+const proofSteps={
+1:{question:"Why may the complex derivative limit be restricted to the real direction Δz=Δx?",guidance:"A correct answer should say that existence of the full complex limit implies every restricted path gives the same limit."},
+2:{question:"Compute f'(z0) along the real direction.",guidance:"The correct result is f'(z0)=u_x+i v_x."},
+3:{question:"Compute f'(z0) along the imaginary direction Δz=iΔy.",guidance:"The correct result is f'(z0)=v_y-i u_y. Watch 1/i=-i."},
+4:{question:"Compare the two directional formulas and derive the CR equations.",guidance:"The correct equations are u_x=v_y and u_y=-v_x."},
+5:{question:"Write the first-order expansions for Δu and Δv using real differentiability.",guidance:"Use Δu=u_xΔx+u_yΔy+o(ρ), Δv=v_xΔx+v_yΔy+o(ρ), with ρ=sqrt(Δx^2+Δy^2). Existence of partials alone is not enough."},
+6:{question:"Use the CR equations to factor the linear part of Δf as a complex number times Δz.",guidance:"Derive u_y+i v_y=i(u_x+i v_x), hence Δf=(u_x+i v_x)Δz+o(|Δz|)."},
+7:{question:"Why does Δf=(u_x+i v_x)Δz+o(|Δz|) imply complex differentiability?",guidance:"Divide by Δz and show the error quotient tends to zero in modulus."}
+};
+function showHint(n){document.getElementById(`h${n}`).style.display='block';localStorage.setItem(`cr_hint_${n}`,'1');saveAnswer(n);typeset(`h${n}`)}
+function reveal(n){document.getElementById(`r${n}`).style.display='block';localStorage.setItem(`cr_reveal_${n}`,'1');saveAnswer(n);updateProgress();typeset(`r${n}`)}
+function saveAnswer(n){const el=document.getElementById(`a${n}`);localStorage.setItem(`cr_answer_${n}`,el.value)}
+function updateProgress(){let k=0;for(let i=1;i<=total;i++){if(localStorage.getItem(`cr_reveal_${i}`)==='1')k++}document.getElementById('progress').textContent=`${k} of ${total} proof steps revealed`}
+function typeset(id){if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([document.getElementById(id)])}}
+function buildAIPrompt(n){
+  saveAnswer(n);
+  const answer=document.getElementById(`a${n}`).value.trim();
+  const hintSeen=localStorage.getItem(`cr_hint_${n}`)==='1';
+  const explanationSeen=localStorage.getItem(`cr_reveal_${n}`)==='1';
+  const prompt=`You are acting as a restrained undergraduate complex-analysis proof tutor.
+
+The theorem being studied:
+Let f(z)=u(x,y)+i v(x,y). Assume u and v are differentiable as real-valued functions of (x,y) at (x0,y0). Then f is complex differentiable at z0=x0+i y0 if and only if the Cauchy–Riemann equations u_x=v_y and u_y=-v_x hold at (x0,y0).
+
+Current proof step: ${n} of 7.
+
+Question:
+${proofSteps[n].question}
+
+Student's answer:
+${answer || "[The student has not written an answer yet.]"}
+
+Instructor's private guidance:
+${proofSteps[n].guidance}
+
+The student has ${hintSeen ? "" : "not "}revealed the small hint for this step.
+The student has ${explanationSeen ? "" : "not "}revealed the explanation for this step.
+
+Rules:
+1. Evaluate ONLY the student's answer to the current proof step.
+2. Do NOT give the full proof.
+3. Do NOT reveal later proof steps.
+4. First decide whether the answer is mathematically correct and sufficiently justified.
+5. If there is an error or missing justification, identify only the earliest substantive issue.
+6. Give exactly ONE small hint or focused question to repair the current step.
+7. If the answer is correct, say so briefly and identify the key reason in one sentence; do not continue the proof.
+8. Never claim that the CR equations alone at one point imply complex differentiability; the converse here uses real differentiability of u and v.
+9. If the student has written nothing, ask one focused question to help them begin.
+10. Keep the response under 110 words.
+11. Use precise language appropriate for undergraduate complex analysis.`;
+  const box=document.getElementById(`aiprompt${n}`);box.textContent=prompt;box.style.display='block';
+  document.getElementById(`aistatus${n}`).textContent='AI diagnosis prompt ready.';return prompt
+}
+async function copyAIPrompt(n){
+  const box=document.getElementById(`aiprompt${n}`);let text=box.textContent;if(!text)text=buildAIPrompt(n);
+  try{await navigator.clipboard.writeText(text);document.getElementById(`aistatus${n}`).textContent='Copied. Open ChatGPT, paste the prompt, and use the diagnosis to revise this step.'}
+  catch(err){box.style.display='block';document.getElementById(`aistatus${n}`).textContent='Automatic copy was blocked. Select the prompt above and copy it manually.'}
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  for(let i=1;i<=total;i++){
+    const saved=localStorage.getItem(`cr_answer_${i}`);if(saved)document.getElementById(`a${i}`).value=saved;
+    document.getElementById(`a${i}`).addEventListener('input',()=>saveAnswer(i));
+    if(localStorage.getItem(`cr_hint_${i}`)==='1')document.getElementById(`h${i}`).style.display='block';
+    if(localStorage.getItem(`cr_reveal_${i}`)==='1')document.getElementById(`r${i}`).style.display='block';
+  }
+  updateProgress();
+});
+</script>
+</body>
+</html>
